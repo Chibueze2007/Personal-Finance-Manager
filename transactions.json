@@ -1,0 +1,23 @@
+[
+    {
+        "amount": 20000.0,
+        "transaction_type": "credit",
+        "category": "income",
+        "description": "salary",
+        "date": "2026-08-19"
+    },
+    {
+        "amount": 2000000.0,
+        "transaction_type": "debit",
+        "category": "expenses",
+        "description": "debt",
+        "date": "2026-09-11"
+    },
+    {
+        "amount": 20000000.0,
+        "transaction_type": "credit",
+        "category": "income",
+        "description": "debt repayment",
+        "date": "2026-10-21"
+    }
+]
