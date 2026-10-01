@@ -3,7 +3,7 @@ from datetime import datetime
 
 # created the class Transaction
 class Transaction:
-    def __init__(self,amount,transaction_type,category,description,date):
+    def __init__(self,amount,transaction_type,category,description,date,id=None):
 
 
         # condition so that amount is a number
@@ -31,6 +31,7 @@ class Transaction:
             datetime.strptime(date,"%Y-%m-%d")
         except ValueError:
             raise ValueError("Incorrect date format")
+        self.id = id
         self.amount= amount
         self.category = category
         self.description = description
@@ -38,17 +39,19 @@ class Transaction:
 
     # Define how a transaction object should be displayed when printed
     def __str__(self):
-        return f"{self.transaction_type.capitalize()} | {self.category.capitalize()} | {self.description.capitalize()} | ₦{self.amount:,} | {self.date}"
+        return f"ID: {self.id} | {self.transaction_type.capitalize()} | {self.category.capitalize()} | {self.description.capitalize()} | ₦{self.amount:,} | {self.date}"
 
 
     # Convert the transaction object into a dictionary for JSON storage
     def to_dict(self):
         return{
+            "id":self.id,
             "amount":self.amount,
             "transaction_type":self.transaction_type,
             "category":self.category,
             "description": self.description,
             "date":self.date,
+            
         }
     # Create a Transaction object from saved dictionary data
    
@@ -78,5 +81,6 @@ class Transaction:
             data["transaction_type"],
             data["category"],
             data["description"],
-            data["date"]
+            data["date"],
+            data["id"]
         )

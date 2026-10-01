@@ -150,7 +150,67 @@ def filter_transactions(manager):
                 print("Invalid transaction type. Please enter 'credit' or 'debit'.")
     else:
         print("Invalid filter type. Please enter 'category' or 'type'.")            
-
+    
+def edit_transactions(manager):
+    while True:
+        try:
+            transaction_id = int(input("Enter the transaction ID you want to edit: "))
+            break
+        except ValueError:
+            print("Invalid input. Please enter a valid transaction ID.")
+    transaction = manager.find_transaction_by_id(transaction_id)
+    if transaction is None:
+        print("Transaction not found")
+        return
+    print("\nWhat do you want to edit? ")
+    print("1. Amount")
+    print("2. Transaction Type")
+    print("3. Category")
+    print("4. Description")
+    print("5. Date")
+    choice = input("Enter your choice(1-5): ")
+    while choice not in ("1", "2", "3", "4", "5"):
+        choice = input("Invalid choice. Please enter a number from 1 to 5: ")
+    if choice == "1":
+        field = "amount"
+    elif choice == "2":
+        field = "transaction_type"
+    elif choice == "3":
+        field = "category"
+    elif choice == "4":
+        field = "description"
+    elif choice == "5":
+        field = "date"
+   
+    new_value = input("Enter the new value: ")
+    while True:
+        try:
+            if field =="amount":
+                new_value = float(new_value)
+                
+                if new_value <= 0:
+                    raise ValueError("Amount should be greater than 0")
+            elif field == "transaction_type":
+                    if new_value.lower() not in ("credit", "debit"):
+                        raise ValueError("Transaction type should be either credit or debit")
+            elif field == "category":
+                    if not new_value.strip():
+                        raise ValueError("Category cannot be empty")
+            elif field == "description":
+                    if not new_value.strip():
+                        raise ValueError("Description cannot be empty") 
+            elif field == "date":
+                    try:
+                        datetime.strptime(new_value, "%Y-%m-%d")
+                    except ValueError:
+                        raise ValueError("Incorrect date format. Please use YYYY-MM-DD.")
+            break
+        except ValueError as error:
+            print(f"Invalid input: {error}")
+            new_value = input("Enter the new value: ")
+    success = manager.edit_transactions(transaction_id,field,new_value)
+    if success:
+        print("Transaction updated successfully")
 # Display the main menu and get the user's choice
 def show_menu():
     print("\n========PERSONAL FINANCE MANAGER=====")
@@ -161,13 +221,17 @@ def show_menu():
     print("5. View Current Balance")
     print("6. Search Transactions by Description")
     print("7. Filter Transactions by Category or Transaction Type")
-    print("8. Exit")
+    print("8. Edit Transactions")
+    print("9. Delete Transaction")
+    print("10. View Financial Summary")
+    print("11. Exit")
     while True:
-        choice = input("Enter your choice (1-8): ")
-        if choice in("1", "2", "3", "4", "5", "6", "7", "8"):
+        choice = input("Enter your choice (1-11): ")
+        if choice in("1", "2", "3", "4", "5", "6", "7", "8", "9", "10","11"):
             return choice
         else:
-            print("Invalid choice. Please enter a number from 1 to 8.")
+            
+            print("Invalid choice. Please enter a number from 1 to 11.")
 
 # Run the main program menu until the user chooses to exit
 def run_menu(manager):
@@ -188,9 +252,45 @@ def run_menu(manager):
         elif choice == "7":
             filter_transactions(manager)
         elif choice == "8":
-
+            edit_transactions(manager)
+        elif choice == "9":
+            delete_transaction(manager)
+        elif choice == "10":
+            financial_summary(manager)
+        elif choice == "11":
             print("Exiting the program.............")
             break
 
+def delete_transaction(manager):
+    while True:
+        try:
+            transaction_id = int(input("Enter the transaction ID you want to delete: "))
+            break
+        except ValueError:
+            print("Invalid input. Please enter a valid transaction ID.")
+    transaction = manager.find_transaction_by_id(transaction_id)
+    if transaction is None:
+        print("Transaction not found")
+        return
+    success = manager.delete_transaction(transaction_id)
+    if success:
+        print("Transaction deleted successfully")
+    else:
+        print("Failed to delete transaction")
+def financial_summary(manager):
+    total_income = manager.calc_total_income()
+    total_expenses = manager.calc_total_expenses()
+    balance = manager.calc_balance()
+    total_transactions = manager.total_transactions()
+    income_transactions = manager.count_income_transactions()
+    expense_transactions = manager.count_expense_transactions()
+    print("\n=====Financial Summary=======:")
+    print(f"Total Income: ₦{total_income:,.2f}")
+    print(f"Total Expenses: ₦{total_expenses:,.2f}")
+    print(f"Balance: ₦{balance:,.2f}")
+    print(f"Total Transactions: {total_transactions}")
+    print(f"Income Transactions: {income_transactions}")
+    print(f"Expense Transactions: {expense_transactions}")
 # Start the Finance Manager application
+
 run_menu(manager)

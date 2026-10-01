@@ -1,23 +1,34 @@
 [
     {
-        "amount": 20000.0,
+        "id": 1,
+        "amount": 2000000.0,
         "transaction_type": "credit",
-        "category": "income",
-        "description": "salary",
-        "date": "2026-08-19"
+        "category": "savings",
+        "description": "repayment",
+        "date": "2026-09-11"
     },
     {
-        "amount": 2000000.0,
+        "id": 2,
+        "amount": 200.0,
         "transaction_type": "debit",
-        "category": "expenses",
+        "category": "savings",
         "description": "debt",
         "date": "2026-09-11"
     },
     {
-        "amount": 20000000.0,
+        "id": 3,
+        "amount": 2000.0,
+        "transaction_type": "debit",
+        "category": "expenses",
+        "description": "airtime",
+        "date": "2026-09-11"
+    },
+    {
+        "id": 4,
+        "amount": 200.0,
         "transaction_type": "credit",
-        "category": "income",
-        "description": "debt repayment",
-        "date": "2026-10-21"
+        "category": "savings",
+        "description": "debt refund",
+        "date": "2026-09-12"
     }
 ]

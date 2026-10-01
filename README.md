@@ -1,22 +1,33 @@
 # Personal Finance Manager
 
-A Python-based command-line financial management application for recording, managing, and analyzing personal financial transactions.
+A Python command-line application I built to help manage personal financial transactions.
 
-The project was built with a focus on **Object-Oriented Programming, modular design, data validation, defensive programming, persistent storage, and user input handling**.
+I started this project to improve my Python skills and get more practical experience with **Object-Oriented Programming, file handling, JSON, validation, exception handling, and building applications with multiple files**.
+
+The project started as a simple CLI application and was later improved with transaction IDs, editing, deleting, and a financial summary.
 
 ---
 
 ## Overview
 
-The Personal Finance Manager is a command-line application built with Python that allows users to manage personal financial transactions through an interactive menu-driven interface.
+The Personal Finance Manager allows users to record and manage income and expenses from the command line.
 
-Users can record income and expenses, view their transaction history, calculate financial summaries, search transaction descriptions, and filter transactions by category or transaction type.
+Users can:
 
-The application uses a modular structure where transaction modeling, business logic, data persistence, and user interaction are separated into different components.
+* Add transactions
+* View transactions
+* Calculate total income
+* Calculate total expenses
+* Check the current balance
+* Search transactions
+* Filter transactions
+* Edit transactions
+* Delete transactions
+* View a financial summary
 
-Transaction data is stored using JSON, allowing information to remain available between application sessions.
+The application stores transaction data in a JSON file, so the transactions are still available when the program is opened again.
 
-A major focus of the project was **data integrity and validation**. User input and saved transaction data are validated before being accepted by the application, while invalid or corrupted JSON data is handled without unnecessarily crashing the program.
+One of the things I focused on while building the project was making sure invalid input was handled properly instead of allowing bad data into the application.
 
 ---
 
@@ -24,116 +35,117 @@ A major focus of the project was **data integrity and validation**. User input a
 
 ### Transaction Management
 
-* Create and store financial transactions
-* Support for both income (`credit`) and expenses (`debit`)
-* Transaction categories and descriptions
-* Date-based transaction records
-* Automatic persistence of transaction data
+* Add income and expense transactions
+* Assign categories and descriptions
+* Store transaction dates
+* Give each transaction a unique ID
+* Edit existing transactions
+* Delete transactions
+* Save transactions to JSON
 
-### Financial Analysis
+### Financial Calculations
 
 * Calculate total income
 * Calculate total expenses
 * Calculate current balance
-* View complete transaction history
+* View a financial summary
+* Count total transactions
+* Count income transactions
+* Count expense transactions
 
 ### Search & Filtering
 
-* Search transactions using descriptions
-* Case-insensitive description searching
+* Search transactions by description
 * Filter transactions by category
 * Filter transactions by transaction type
-* Case-insensitive filtering
+* Case-insensitive searching and filtering
 
 ### Input Validation
 
-The application validates user input before processing transactions.
+The application checks user input before accepting it.
 
-Validation includes:
+Some of the validation includes:
 
-* Numeric transaction amounts
-* Positive transaction amounts
-* Valid transaction types
-* Non-empty categories
-* Non-empty descriptions
-* Valid date format
-* Required transaction fields
+* Amount must be a number
+* Amount must be greater than 0
+* Transaction type must be `credit` or `debit`
+* Category cannot be empty
+* Description cannot be empty
+* Date must follow the `YYYY-MM-DD` format
+* Transaction IDs must be valid when editing or deleting
 
-### Defensive Data Handling
+### JSON Data Validation
 
-The application also checks data loaded from persistent storage.
+The application also checks data loaded from `transactions.json`.
 
-It can detect:
+It handles things such as:
 
-* Missing `transactions.json`
+* Missing JSON file
 * Invalid JSON
 * Incorrect JSON structure
 * Missing transaction fields
-* Invalid transaction amounts
-* Invalid transaction types
-* Invalid transaction dates
-
-This prevents invalid stored data from being silently accepted by the application's transaction model.
+* Invalid saved transaction values
 
 ---
 
-## Architecture
+## How the Project is Organized
 
-The application follows a simple modular architecture that separates responsibilities between different components.
+I separated the project into different files so that each file has a specific responsibility.
 
 ```text
                     ┌──────────────────────┐
                     │       main.py        │
-                    │  CLI / User Input    │
+                    │  User Interaction    │
                     └──────────┬───────────┘
                                │
                                ▼
                     ┌──────────────────────┐
                     │  FinanceManager.py   │
-                    │   Business Logic     │
+                    │   Main Logic         │
                     └──────────┬───────────┘
                                │
                                ▼
                     ┌──────────────────────┐
                     │    transaction.py    │
-                    │  Transaction Model   │
-                    │     Validation       │
+                    │ Transaction Model     │
                     └──────────┬───────────┘
                                │
                                ▼
                     ┌──────────────────────┐
                     │      storage.py      │
-                    │  Persistence Layer   │
+                    │ JSON Storage         │
                     └──────────┬───────────┘
                                │
                                ▼
                     ┌──────────────────────┐
                     │  transactions.json   │
-                    │  Persistent Storage  │
+                    │ Saved Data            │
                     └──────────────────────┘
 ```
 
-### Design Responsibilities
+### `main.py`
 
-**`main.py`**
+Handles the menu, user input, and functions that interact with the user.
 
-Responsible for the command-line interface, menu navigation, user input, input validation, and interaction with the application's management layer.
+### `FinanceManager.py`
 
-**`FinanceManager.py`**
+Contains most of the application's main logic.
 
-Acts as the application's management layer. It handles the transaction collection, financial calculations, searching, filtering, and preparing transaction data for storage.
+It handles adding, editing, deleting, searching, filtering, calculating totals, and managing transaction IDs.
 
-**`transaction.py`**
+### `transaction.py`
 
-Defines the `Transaction` data model and provides validation when transaction objects are created.
+Contains the `Transaction` class.
 
-**`storage.py`**
+This is where the transaction data is created and validated.
 
-Provides the persistence layer responsible for reading and writing transaction data and checking the basic structure of the stored JSON data.
+### `storage.py`
 
-**`transactions.json`**
+Handles loading and saving data from the JSON file.
 
-Stores transaction records so that data can persist between application sessions.
+### `transactions.json`
+
+Stores the transaction data so it can be loaded again when the application starts.
 
 ---
 
@@ -141,7 +153,7 @@ Stores transaction records so that data can persist between application sessions
 
 ```text
 Personal-Finance-Manager/
-│
+
 ├── main.py
 ├── transaction.py
 ├── FinanceManager.py
@@ -155,141 +167,146 @@ Personal-Finance-Manager/
 
 ## Technologies & Concepts
 
-### Programming Language
+### Language
 
 * Python
 
-### Core Concepts
+### Concepts Used
 
 * Object-Oriented Programming
 * Classes and objects
 * Class methods
+* Functions
 * Modular programming
 * File handling
-* JSON serialization
+* JSON
+* JSON serialization and deserialization
 * Data persistence
 * Exception handling
 * Input validation
-* Defensive programming
 * Searching and filtering
+* CRUD operations
 * Command-line interfaces
 
 ---
 
-## Data Persistence
+## How Data is Saved
 
-The application uses JSON-based persistence to maintain transaction data between sessions.
+The project uses JSON to save transactions.
 
-Transactions are converted from Python objects into dictionaries before being written to `transactions.json`.
+When a transaction is created, it is converted into a dictionary before being saved.
 
-When the application starts, saved dictionaries are loaded and converted back into `Transaction` objects.
+When the program starts again, the saved data is loaded and converted back into `Transaction` objects.
+
+The basic flow is:
 
 ```text
 Transaction Object
         ↓
      to_dict()
         ↓
- Python Dictionary
+     Dictionary
         ↓
-    JSON File
+ transactions.json
         ↓
-   load_data()
+    load_data()
         ↓
- Python Dictionary
+     Dictionary
         ↓
    from_dict()
         ↓
 Transaction Object
 ```
 
-This provides a simple persistence mechanism while keeping the transaction model and storage logic separated.
+Transaction IDs are also saved in the JSON file so that an existing transaction keeps the same ID after restarting the program.
 
 ---
 
-## Validation Strategy
+## Validation
 
-Validation exists at multiple levels of the application.
+I added validation in different parts of the application.
 
-### User Input Validation
-
-The command-line interface validates information before creating transactions.
+### User Input
 
 For example:
 
 ```text
-Amount → Must be numeric and greater than 0
+Amount → Must be a number and greater than 0
 Type → credit or debit
 Category → Cannot be empty
 Description → Cannot be empty
 Date → YYYY-MM-DD
 ```
 
-### Model-Level Validation
+### Transaction Model
 
-The `Transaction` class independently validates transaction data when objects are created.
+The `Transaction` class also validates the data when a transaction object is created.
 
-This provides an additional layer of protection because transaction objects do not rely only on validation performed by the command-line interface.
+This means the data is not only checked in the CLI. The model also has its own validation.
 
-### Stored Data Validation
+### Saved Data
 
-Data loaded from JSON is also checked before being converted into transaction objects.
+Data loaded from the JSON file is also checked.
 
-The storage layer checks the basic JSON structure, while `Transaction.from_dict()` verifies that required transaction fields are present and that the values satisfy the transaction model's validation rules.
+For example, if a required field is missing or an invalid value is stored, the `Transaction` class can reject it.
 
 ---
 
 ## Error Handling
 
-The application uses Python exception handling to deal with invalid input and storage problems.
+I used Python's exception handling to deal with invalid input and other problems.
 
-Examples include:
+Some examples include:
 
-* Invalid numeric input
+* Invalid numbers
 * Invalid dates
 * Invalid transaction types
+* Invalid transaction IDs
 * Corrupted JSON
 * Incorrect JSON structure
 * Missing transaction fields
 * Invalid saved transaction values
-
-For certain storage-level problems, such as corrupted JSON or an invalid top-level JSON structure, the application displays a warning and continues with an empty transaction collection instead of immediately terminating.
 
 ---
 
 ## Testing
 
-The application underwent structured manual testing covering both normal functionality and failure scenarios.
+I manually tested the application throughout the development process.
 
-Testing included:
+Some of the tests included:
 
-* Invalid transaction amounts
+* Adding transactions
+* Adding multiple transactions
+* Invalid amounts
 * Zero and negative amounts
 * Invalid transaction types
 * Empty categories
 * Empty descriptions
 * Invalid dates
-* Invalid menu selections
-* Invalid filters
-* Empty searches
-* Transaction creation
-* Transaction persistence
-* Multiple transaction storage
-* Income calculations
-* Expense calculations
-* Balance calculations
-* Category filtering
-* Type filtering
-* Description searching
+* Searching transactions
+* Searching for something that doesn't exist
+* Filtering by category
+* Filtering by transaction type
 * Case-insensitive searching
 * Case-insensitive filtering
-* Non-matching searches
+* Checking income
+* Checking expenses
+* Checking balance
+* Editing transactions
+* Editing invalid values
+* Editing a transaction that doesn't exist
+* Checking that edited data remains after restarting
+* Deleting transactions
+* Deleting a transaction that doesn't exist
+* Checking that deleted data remains deleted after restarting
+* Checking transaction IDs
+* Financial summary
+* Financial summary with no transactions
 * Corrupted JSON
-* Incorrect JSON structure
 * Missing transaction fields
-* Invalid saved transaction values
-* End-to-end application workflow
+* End-to-end testing
 
-The testing process also helped identify and improve how the application handled malformed JSON and incomplete stored transaction data.
+The testing helped me find and fix several issues while developing the project.
 
 ---
 
@@ -297,6 +314,7 @@ The testing process also helped identify and improve how the application handled
 
 ```text
 ========PERSONAL FINANCE MANAGER=====
+
 1. Add Transaction
 2. View Transactions
 3. View Total Income
@@ -304,17 +322,20 @@ The testing process also helped identify and improve how the application handled
 5. View Current Balance
 6. Search Transactions by Description
 7. Filter Transactions by Category or Transaction Type
-8. Exit
+8. Edit Transactions
+9. Delete Transaction
+10. View Financial Summary
+11. Exit
 
-Enter your choice (1-8): 1
+Enter your choice (1-11): 10
 
-Enter amount: 15000
-Enter the transaction type (credit/debit): debit
-Enter the category for the transaction: Food
-Enter the description of the transaction: Dinner
-Enter the date: 2026-09-20
-
-Transaction added successfully!
+=====Financial Summary=======:
+Total Income: ₦150,000.00
+Total Expenses: ₦45,000.00
+Balance: ₦105,000.00
+Total Transactions: 5
+Income Transactions: 2
+Expense Transactions: 3
 ```
 
 ---
@@ -331,7 +352,7 @@ Transaction added successfully!
 git clone <repository-url>
 ```
 
-### Navigate into the Project
+### Enter the Project Folder
 
 ```bash
 cd Personal-Finance-Manager
@@ -343,68 +364,74 @@ cd Personal-Finance-Manager
 python main.py
 ```
 
-The application will launch through the command-line interface.
+The application will then start in the terminal.
 
 ---
 
-## Engineering Focus
+## What I Focused On
 
-This project was built to go beyond simply creating a working CLI application.
+While building this project, I focused on more than just making the program work.
 
-The development process focused on:
+I wanted to understand how to:
 
-* Separating application responsibilities into modules
-* Designing a reusable transaction model
-* Validating data before persistence
-* Protecting the application from malformed stored data
-* Maintaining state between application sessions
-* Building reusable management methods
-* Handling invalid user input
-* Testing both normal and failure scenarios
-* Documenting the application's architecture and behavior
+* Break a Python project into different files
+* Use classes and objects properly
+* Store data outside the program
+* Validate user input
+* Handle errors
+* Work with JSON
+* Keep data after restarting the program
+* Add, edit, and delete records
+* Debug problems as they came up
+* Test different situations instead of only testing the normal case
 
 ---
 
 ## Future Improvements
 
-Potential improvements include:
+Some of the things I plan to add in future versions are:
 
-* Transaction editing and deletion
+* Tkinter GUI
 * Monthly and yearly financial reports
-* Category-based spending analytics
+* Spending analytics
 * Charts and data visualization
-* Automated unit testing
-* Database-backed persistence using MySQL or PostgreSQL
-* User authentication
+* Bank statement feature
+* Automated tests
+* MySQL or PostgreSQL database
+* User registration and login
 * CSV import and export
-* Graphical user interface
 * REST API
-* Web-based version of the application
+* Web version
 
 ---
 
-## Learning Outcomes
+## What I Learned
 
-This project helped me improve my understanding of Python beyond just writing individual scripts.
+This project helped me understand Python better because I had to use several concepts together instead of writing small standalone programs.
 
-I gained practical experience in:
+I got more practice with:
 
-* Designing Python applications using OOP
-* Structuring applications into separate modules
-* Working with persistent data
-* Serializing and deserializing JSON
-* Designing validation rules
-* Handling exceptions
-* Building interactive CLI applications
-* Testing application behavior
-* Debugging unexpected data conditions
-* Thinking about data integrity and defensive programming
-* Documenting software projects for version control and collaboration
+* Object-Oriented Programming
+* Classes and objects
+* Modular programming
+* JSON
+* File handling
+* Data validation
+* Exception handling
+* Persistent data
+* CRUD operations
+* Debugging
+* Testing
+* Git and GitHub
+
+I also learned that getting a program to work is only part of building a project. I had to think about what happens when the user enters something unexpected or when the saved data is not what the program expects.
 
 ---
 
 ## Project Status
 
-**Status: Completed — CLI Version**
+**V2 Completed — CLI Version**
 
-The current version provides a functional command-line financial management system with transaction management, financial calculations, searching, filtering, validation, JSON persistence, and defensive handling of invalid stored data.
+The current version has transaction management, persistent transaction IDs, editing and deleting transactions, financial calculations, financial summaries, searching, filtering, input validation, and JSON persistence.
+
+The next major version will focus on building a GUI and adding more financial analysis features.
